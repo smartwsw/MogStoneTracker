@@ -202,6 +202,7 @@
             updateAccomplishedList();
             updateFinishedBattle();
             updateUnFinishedBattle();
+            countPoints();
         }
 
         function updateTargetList() {
@@ -247,8 +248,16 @@
         }
 
         function countPoints() {
-
+            var coinCount = 0;
+            for (var key in dropItemList) {
+                if (dropItemList[key].includes("古钱")) {
+                    coinCount++;
+                }
+            }
+            var points = dropItemList.length + 2 * coinCount;
+            document.getElementById("header").innerText = "已获得点数：" + points;
         }
+
         addOverlayListener('LogLine', (data) => {
             if (data.line[0] == "00") {
                 if (data.line[2] == "083e") {
@@ -267,6 +276,7 @@
                 updateAccomplishedList();
                 updateFinishedBattle();
                 updateUnFinishedBattle();
+                countPoints();
             }
         });
 
@@ -277,9 +287,10 @@
 </head>
 
 <body onload="startUp()">
-    <div id="header">
-    </div>
     <ul class="accordion" data-accordion data-options="multi_expand:true;">
+        <li class=" accordion-navigation">
+            <a id="header">已获得点数：</a>
+        </li>
         <li class=" accordion-navigation">
             <a href="#unaccomplished">未获取掉落</a>
             <div id="unaccomplished" class="content">
