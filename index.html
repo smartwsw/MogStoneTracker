@@ -1,0 +1,319 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+    <style>
+        * {
+            font-family: "Meiryo";
+            font-size: 12px;
+            background-color: rgba(211, 211, 211, 0.6) !important;
+        }
+
+        ::-webkit-scrollbar {
+            background-color: lightgray;
+            width: 10px;
+            height: 10px;
+            background-clip: padding-box;
+        }
+
+        ::-webkit-scrollbar-button {
+            width: 0px;
+            height: 0px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: gray;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        body,
+        html {
+            margin: 0;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(128, 128, 128, 0.6);
+        }
+
+        #accomplished,
+        #unaccomplished,
+        #finishedBattle,
+        #unfinishedBattle {
+            max-height: 300px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/foundation/5.5.3/css/foundation.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/foundation.min.js"></script>
+    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/vendor/modernizr.js"></script>
+    <script>
+
+        let targetList = ["玛哈古钱",
+            "玛哈大古钱",
+            "稀有玛哈古钱",
+            "拉巴纳斯塔古钱",
+            "高古古钱",
+            "缪隆德古钱",
+            "机械古钱",
+            "古旧的觉醒头盔",
+            "古旧的觉醒铠甲",
+            "古旧的觉醒手铠",
+            "古旧的觉醒长裤",
+            "古旧的觉醒锁甲靴",
+            "古旧的觉醒腰带",
+            "古旧的觉醒饰品",
+            "古旧的觉醒长剑",
+            "阿尔法透镜",
+            "阿尔法长杆",
+            "阿尔法曲柄",
+            "阿尔法弹簧",
+            "阿尔法踏板",
+            "阿尔法锁链",
+            "阿尔法螺栓",
+            "阿尔法幻晶",
+            "西格玛透镜",
+            "西格玛长杆",
+            "西格玛曲柄",
+            "西格玛弹簧",
+            "西格玛踏板",
+            "西格玛锁链",
+            "西格玛螺栓",
+            "西格玛幻晶",
+            "德尔塔透镜",
+            "德尔塔长杆",
+            "德尔塔曲柄",
+            "德尔塔弹簧",
+            "德尔塔踏板",
+            "德尔塔锁链",
+            "德尔塔螺栓",
+            "德尔塔幻晶",
+            "亚历山大透镜",
+            "亚历山大长杆",
+            "亚历山大曲柄",
+            "亚历山大弹簧",
+            "亚历山大踏板",
+            "亚历山大锁链",
+            "亚历山大螺栓",
+            "亚历山大齿轮",
+            "弥达斯透镜",
+            "弥达斯长杆",
+            "弥达斯曲柄",
+            "弥达斯弹簧",
+            "弥达斯踏板",
+            "弥达斯锁链",
+            "弥达斯螺栓",
+            "弥达斯齿轮",
+            "戈耳狄透镜",
+            "戈耳狄长杆",
+            "戈耳狄曲柄",
+            "戈耳狄弹簧",
+            "戈耳狄踏板",
+            "戈耳狄锁链",
+            "戈耳狄螺栓",
+            "云神图腾",
+            "武神图腾",
+            "魔神图腾",
+            "邪龙图腾",
+            "女神图腾",
+            "鬼神图腾",
+            "苍穹甲胄碎片",
+            "豪神图腾",
+            "美神图腾",
+            "神龙图腾",
+            "白虎图腾",
+            "夜神图腾",
+            "朱雀图腾",
+            "青龙图腾",
+            "冥王图腾",
+            "妖灵王图腾",
+            "完美神图腾"]
+        var battleDropList = {
+            "魔航船虚无方舟": ["玛哈古钱"],
+            "禁忌城邦马哈": ["玛哈大古钱"],
+            "影之国": ["稀有玛哈古钱"],
+            "失落之都拉巴纳斯塔": ["拉巴纳斯塔古钱"],
+            "封闭圣塔黎铎拉纳大灯塔": ["高古古钱"],
+            "乐欲之所瓯博讷修道院": ["缪隆德古钱"],
+            "复制工厂废墟": ["机械古钱"],
+            "伊甸希望乐园 觉醒之章1": ["古旧的觉醒头盔", "古旧的觉醒铠甲", "古旧的觉醒腰带", "古旧的觉醒饰品", "古旧的觉醒长裤", "古旧的觉醒锁甲靴"],
+            "伊甸希望乐园 觉醒之章2": ["古旧的觉醒头盔", "古旧的觉醒铠甲", "古旧的觉醒腰带", "古旧的觉醒饰品", "古旧的觉醒手铠", "古旧的觉醒长裤", "古旧的觉醒锁甲靴"],
+            "伊甸希望乐园 觉醒之章3": ["古旧的觉醒头盔", "古旧的觉醒铠甲", "古旧的觉醒饰品", "古旧的觉醒手铠", "古旧的觉醒长裤"],
+            "伊甸希望乐园 觉醒之章4": ["古旧的觉醒长剑", "古旧的觉醒手铠", "古旧的觉醒长裤", "古旧的觉醒锁甲靴", "古旧的觉醒饰品"],
+            "欧米茄时空狭缝 德尔塔幻境1": ["德尔塔锁链", "德尔塔螺栓", "德尔塔踏板"],
+            "欧米茄时空狭缝 德尔塔幻境2": ["德尔塔螺栓", "德尔塔踏板", "德尔塔透镜"],
+            "欧米茄时空狭缝 德尔塔幻境3": ["德尔塔透镜", "德尔塔曲柄", "德尔塔弹簧"],
+            "欧米茄时空狭缝 德尔塔幻境4": ["德尔塔弹簧", "德尔塔曲柄", "德尔塔长杆", "德尔塔幻晶"],
+            "欧米茄时空狭缝 西格玛幻境1": ["西格玛锁链", "西格玛螺栓", "西格玛踏板"],
+            "欧米茄时空狭缝 西格玛幻境2": ["西格玛螺栓", "西格玛踏板", "西格玛透镜"],
+            "欧米茄时空狭缝 西格玛幻境3": ["西格玛透镜", "西格玛曲柄", "西格玛弹簧"],
+            "欧米茄时空狭缝 西格玛幻境4": ["西格玛弹簧", "西格玛曲柄", "西格玛长杆", "西格玛幻晶"],
+            "欧米茄时空狭缝 阿尔法幻境1": ["阿尔法锁链", "阿尔法螺栓", "阿尔法踏板"],
+            "欧米茄时空狭缝 阿尔法幻境2": ["阿尔法螺栓", "阿尔法踏板", "阿尔法透镜"],
+            "欧米茄时空狭缝 阿尔法幻境3": ["阿尔法透镜", "阿尔法曲柄", "阿尔法弹簧"],
+            "欧米茄时空狭缝 阿尔法幻境4": ["阿尔法弹簧", "阿尔法曲柄", "阿尔法长杆", "阿尔法幻晶"],
+            "亚历山大机神城 启动之章1": ["戈耳狄锁链", "戈耳狄螺栓", "戈耳狄踏板"],
+            "亚历山大机神城 启动之章2": ["戈耳狄螺栓", "戈耳狄踏板", "戈耳狄透镜"],
+            "亚历山大机神城 启动之章3": ["戈耳狄透镜", "戈耳狄曲柄", "戈耳狄弹簧"],
+            "亚历山大机神城 启动之章4": ["戈耳狄弹簧", "戈耳狄曲柄", "戈耳狄长杆"],
+            "亚历山大机神城 律动之章1": ["弥达斯锁链", "弥达斯螺栓", "弥达斯踏板"],
+            "亚历山大机神城 律动之章2": ["弥达斯螺栓", "弥达斯踏板", "弥达斯透镜"],
+            "亚历山大机神城 律动之章3": ["弥达斯透镜", "弥达斯曲柄", "弥达斯弹簧"],
+            "亚历山大机神城 律动之章4": ["弥达斯弹簧", "弥达斯曲柄", "弥达斯长杆", "弥达斯齿轮"],
+            "亚历山大机神城 天动之章1": ["亚历山大锁链", "亚历山大螺栓", "亚历山大踏板"],
+            "亚历山大机神城 天动之章2": ["亚历山大螺栓", "亚历山大踏板", "亚历山大透镜"],
+            "亚历山大机神城 天动之章3": ["亚历山大透镜", "亚历山大曲柄", "亚历山大弹簧"],
+            "亚历山大机神城 天动之章4": ["亚历山大弹簧", "亚历山大曲柄", "亚历山大长杆", "亚历山大齿轮"],
+            "哈迪斯孤念歼灭战": ["冥王图腾"],
+            "无瑕灵君歼殛战": ["完美神图腾"],
+            "缇坦妮雅歼殛战": ["妖灵王图腾"],
+            "须佐之男歼殛战": ["豪神图腾"],
+            "吉祥天女歼殛战": ["美神图腾"],
+            "神龙梦幻歼灭战": ["神龙图腾"],
+            "月读幽夜歼灭战": ["夜神图腾"],
+            "白虎诗魂战": ["白虎图腾"],
+            "朱雀诗魂战": ["朱雀图腾"],
+            "青龙诗魂战": ["青龙图腾"],
+            "俾斯麦歼殛战": ["云神图腾"],
+            "罗波那歼殛战": ["武神图腾"],
+            "圆桌骑士幻想歼灭战": ["苍穹甲胄碎片"],
+            "尼德霍格传奇征龙战": ["邪龙图腾"],
+            "萨菲洛特歼殛战": ["魔神图腾"],
+            "索菲娅歼殛战": ["女神图腾"],
+            "祖尔宛歼殛战": ["鬼神图腾"]
+        };
+        var dropItemList = new Array();
+        var finishedBattle = new Array();
+        var latestLine;
+        var currentItem;
+
+        function startUp() {
+            dropItemList = [];
+            updateTargetList();
+            updateAccomplishedList();
+            updateFinishedBattle();
+            updateUnFinishedBattle();
+        }
+
+        function updateTargetList() {
+            var listPayload = "";
+            for (var key in targetList) {
+                listPayload += "<li>" + targetList[key] + "</li>";
+            }
+            document.getElementById("unAccomplishedList").innerHTML = listPayload;
+        }
+
+        function updateAccomplishedList() {
+            var listPayload = "";
+            for (var key in dropItemList) {
+                listPayload += "<li>" + dropItemList[key] + "</li>";
+            }
+            document.getElementById("itemList").innerHTML = listPayload;
+        }
+
+        function checkDropBattle() {
+            for (var battleKey in battleDropList) {
+                const result = battleDropList[battleKey].every(val => dropItemList.includes(val));
+                if (result == true) {
+                    finishedBattle.push(battleKey);
+                    delete battleDropList[battleKey];
+                }
+            }
+        }
+
+        function updateFinishedBattle() {
+            var listPayload = "";
+            for (var key in finishedBattle) {
+                listPayload += "<li>" + finishedBattle[key] + "</li>";
+            }
+            document.getElementById("finishedBattleList").innerHTML = listPayload;
+        }
+
+        function updateUnFinishedBattle() {
+            var listPayload = "";
+            for (var key in battleDropList) {
+                listPayload += "<li>" + key + "</li>";
+            }
+            document.getElementById("unfinishedBattleList").innerHTML = listPayload;
+        }
+
+        function countPoints() {
+
+        }
+        addOverlayListener('LogLine', (data) => {
+            if (data.line[0] == "00") {
+                if (data.line[2] == "083e") {
+                    latestLine = data.line;
+                    currentItem = data.line[4].split("“")[1].split("”")[0].substring(1);
+                    console.log(`${data.line[4]}`);
+                    if (targetList.includes(currentItem)) {
+                        if (!dropItemList.includes(currentItem)) {
+                            dropItemList.push(currentItem);
+                        }
+                        targetList.pop(currentItem);
+                        checkDropBattle();
+                    }
+                }
+                updateTargetList();
+                updateAccomplishedList();
+                updateFinishedBattle();
+                updateUnFinishedBattle();
+            }
+        });
+
+        startOverlayEvents();
+
+
+    </script>
+</head>
+
+<body onload="startUp()">
+    <div id="header">
+    </div>
+    <ul class="accordion" data-accordion data-options="multi_expand:true;">
+        <li class=" accordion-navigation">
+            <a href="#unaccomplished">未获取掉落</a>
+            <div id="unaccomplished" class="content">
+                <ul id="unAccomplishedList">
+                </ul>
+            </div>
+        </li>
+        <li class="accordion-navigation">
+            <a href="#unfinishedBattle">未完成副本</a>
+            <div id="unfinishedBattle" class="content">
+                <ul id="unfinishedBattleList">
+                </ul>
+            </div>
+        </li>
+        <li class="accordion-navigation">
+            <a href="#accomplished">已获取掉落</a>
+            <div id="accomplished" class="content">
+                <ul id="itemList">
+                </ul>
+            </div>
+        </li>
+        <li class="accordion-navigation">
+            <a href="#finishedBattle">已完成副本</a>
+            <div id="finishedBattle" class="content">
+                <ul id="finishedBattleList">
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <script>
+        $(document).ready(function () {
+            $(document).foundation();
+        })
+    </script>
+</body>
+
+</html>
