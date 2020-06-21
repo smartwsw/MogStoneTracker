@@ -58,7 +58,7 @@
     <script src="https://cdn.staticfile.org/foundation/5.5.3/js/vendor/modernizr.js"></script>
     <script>
 
-        let targetList = ["玛哈古钱",
+        var targetList = ["玛哈古钱",
             "玛哈大古钱",
             "稀有玛哈古钱",
             "拉巴纳斯塔古钱",
@@ -268,7 +268,7 @@
                         if (!dropItemList.includes(currentItem)) {
                             dropItemList.push(currentItem);
                         }
-                        targetList.pop(currentItem);
+                        targetList.splice(targetList.indexOf(currentItem), 1);
                         checkDropBattle();
                     }
                 }
